@@ -1,0 +1,495 @@
+.flip-card {
+  background-color: transparent;
+  width: 200px;
+  height: 220px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 10px 10px;
+  cursor: pointer;
+
+  .flip-card-front {
+    width: 100%;
+    height: 100%;
+    border-radius: 2em;
+    border: 4px solid #3c3d3d;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.733),
+      rgba(255, 255, 255, 0.185)
+    );
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+
+    .profile-image {
+      background-color: transparent;
+      border: none;
+      border-radius: 5em;
+      width: 120px;
+      height: 120px;
+      padding-top: 0px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+
+      .card-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        border: 4px solid #3c3d3d;
+        border-top: none;
+        border-radius: 0 0 1rem 1rem;
+
+        .card-top-para {
+          font-size: 16px;
+          font-weight: bold;
+        }
+      }
+
+      .avatar {
+        margin-top: 10px;
+        border-radius: 35em;
+        display: flex;
+        width: 100%;
+        background-color: #ffffffd3;
+        border: 4px solid #3c3d3d;
+
+        .image {
+          border-radius: 35em;
+          width: 100%;
+        }
+      }
+
+      .name {
+        margin-top: 5px; /* Reducimos el margen superior */
+        font-size: 20px;
+        font-weight: bold;
+        color: #3c3d3d;
+      }
+    }
+  }
+}
+
+.popup-overlay2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .popup {
+    .popup-inner {
+      text-align: center;
+    }
+  }
+}
+
+/* .container {
+  display: flex;
+  .glass {
+    width: 180px;
+    height: 200px;
+    background: linear-gradient(#fff2, transparent);
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    margin: 0 10px;
+  }
+} */
+
+.form-card1 {
+  background-image: linear-gradient(163deg, #64ffda 0%, #64ffda 100%);
+  border-radius: 22px;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .form-card2 {
+    border-radius: 0;
+    transition: all 0.2s;
+
+    .form {
+      border: 2px solid rgb(176, 255, 251);
+
+      width: 440px;
+
+      align-items: center;
+
+      color: rgb(176, 255, 251);
+
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      font-family: inherit;
+      gap: 10px;
+      padding-inline: 2em;
+      padding-bottom: 0.4em;
+      background-color: #171717;
+      border-radius: 20px;
+      padding: 15px;
+
+      .popup-header {
+        display: flex;
+        justify-content: flex-end;
+        align-self: flex-end;
+
+        .close-button {
+          cursor: pointer;
+          border-radius: 100px;
+          width: 26px;
+          height: 26px;
+          border: none;
+          outline: none;
+          background-color: transparent;
+          color: #64ffda;
+          font-weight: bold;
+          outline: 1px solid #64ffda;
+          transition: all ease-in-out 0.3s;
+
+          &:hover {
+            transition: all ease-in-out 0.3s;
+            background-color: #64ffda;
+            color: #000;
+            cursor: pointer;
+            box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+          }
+        }
+      }
+
+      .avatar {
+        margin-top: 10px;
+        border-radius: 35em;
+        display: flex;
+        width: 35%;
+        box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+        background-color: #64ffda;
+        border: 4px solid #64ffda;
+
+        .image {
+          border-radius: 35em;
+          width: 100%;
+        }
+      }
+
+      &-heading {
+        text-align: center;
+        margin: 0.5em;
+        color: #64ffda;
+        font-size: 1.2em;
+        background-color: transparent;
+        align-self: center;
+        padding-bottom: 10px;
+      }
+
+      .Error {
+        width: 50%;
+        color: #ff0000;
+        pointer-events: none;
+        transition: all 0.5s ease-in-out;
+        text-align: left;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .placeholder {
+        width: 50%;
+        text-align: left;
+        font-size: 15px;
+      }
+
+      &-field {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5em;
+        border-radius: 10px;
+        padding: 0.6em;
+        border: none;
+        outline: none;
+        color: white;
+        background-color: #171717;
+        box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+
+        .input-field {
+          background: none;
+          border: none;
+          outline: none;
+          width: 100%;
+          color: #ccd6f6;
+          padding-inline: 1em;
+        }
+      }
+
+      &-two {
+        width: 58%;
+        padding: 0.6em;
+        display: flex;
+
+        .form-field {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5em;
+          border-radius: 10px;
+          padding: 0.6em;
+          border: none;
+          outline: none;
+          color: white;
+          background-color: #171717;
+          box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+          .input-field {
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            color: #ccd6f6;
+            padding-inline: 0.5em;
+          }
+        }
+        .input-pin {
+          .placeholder {
+            margin-left: 10px;
+            margin-bottom: 10px;
+          }
+          width: 65%;
+        }
+        .input-age {
+          .placeholder {
+            margin-left: 20px;
+            margin-bottom: 10px;
+          }
+
+          width: 30%;
+          .form-field {
+            margin-left: 10px;
+          }
+        }
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: row;
+        align-self: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+
+        .send-btn {
+          cursor: pointer;
+          margin-bottom: 3em;
+          padding: 1em;
+          border-radius: 10px;
+          border: none;
+          outline: none;
+          background-color: transparent;
+          color: #64ffda;
+          font-weight: bold;
+          outline: 1px solid #64ffda;
+          transition: all ease-in-out 0.3s;
+
+          &:hover {
+            transition: all ease-in-out 0.3s;
+            background-color: #64ffda;
+            color: #000;
+            cursor: pointer;
+            box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+          }
+        }
+        .delete-btn {
+          cursor: pointer;
+          margin-bottom: 3em;
+          padding: 1em;
+          border-radius: 10px;
+          border: none;
+          outline: none;
+          background-color: transparent;
+          color: #ff0000;
+          font-weight: bold;
+          outline: 1px solid #ff0000;
+          transition: all ease-in-out 0.3s;
+
+          &:hover {
+            transition: all ease-in-out 0.3s;
+            background-color: #ff0000;
+            color: #000;
+            cursor: pointer;
+            box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+          }
+        }
+      }
+    }
+  }
+}
+
+.ui-wrapper {
+  width: 250px;
+  height: 60px;
+  position: absolute;
+  top: 400px;
+
+  background-image: linear-gradient(163deg, #64ffda 0%, #64ffda 100%);
+  border-radius: 22px;
+  transition: all 0.3s;
+
+  .select-wrapper {
+    background-image: linear-gradient(163deg, #64ffda 0%, #64ffda 100%);
+    border-radius: 22px;
+    transition: all 0.3s;
+
+    ul {
+      border: 2px solid rgb(176, 255, 251);
+      background-color: #171717;
+      border-radius: 10px;
+
+      list-style: none;
+      height: 300px;
+
+      overflow-y: auto;
+
+      display: flex;
+      flex-direction: row;
+      align-self: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #64ffda;
+        border-radius: 5px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: rgb(146, 255, 3);
+        background-color: transparent;
+        border-bottom-right-radius: 50%;
+      }
+    }
+
+    li {
+      margin-top: 10px;
+      border-radius: 35em;
+      display: flex;
+      width: 35%;
+      box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+      background-color: #64ffda;
+      border: 4px solid #64ffda;
+
+      img {
+        border-radius: 35em;
+        width: 100%;
+      }
+    }
+  }
+}
+.selected {
+  top: calc(var(--height) + 5px);
+  opacity: 1;
+  visibility: visible;
+}
+
+.popupDeleted {
+  width: 100vw;
+  height: 100vh;
+  background-color: #3c3d3d4d;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .card {
+    width: 300px;
+    height: fit-content;
+    background: rgb(255, 255, 255);
+    border-radius: 20px;
+    gap: 20px;
+    position: relative;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.068);
+
+    .card-content {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .card-heading {
+        font-size: 20px;
+        font-weight: 700;
+        color: rgb(27, 27, 27);
+      }
+
+      .card-description {
+        font-weight: 100;
+        color: rgb(102, 102, 102);
+      }
+    }
+
+    .card-button-wrapper {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      .card-button {
+        width: 50%;
+        height: 35px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .primary {
+        background-color: rgb(255, 114, 109);
+        color: white;
+
+        &:hover {
+          background-color: rgb(255, 73, 66);
+        }
+      }
+      .secondary {
+        background-color: #ddd;
+
+        &:hover {
+          background-color: rgb(197, 197, 197);
+        }
+      }
+    }
+    .exit-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background-color: transparent;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+
+      svg {
+        fill: rgb(175, 175, 175);
+      }
+      
+      &:hover svg {
+        fill: black;
+      }
+    }
+
+  }
+}

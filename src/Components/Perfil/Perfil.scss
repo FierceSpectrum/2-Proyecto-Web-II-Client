@@ -1,0 +1,55 @@
+.flip-card {
+  background-color: transparent;
+  width: 180px;
+  height: 200px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 10px 10px;
+  cursor: pointer;
+
+  .flip-card-front {
+    width: 100%;
+    height: 100%;
+    border-radius: 2em;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.733),
+      rgba(255, 255, 255, 0.185)
+    );
+    box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+
+    .profile-image {
+      background-color: transparent;
+      border: none;
+      border-radius: 5em;
+      width: 120px;
+      height: 120px;
+      padding-top: 15px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+
+      .avatar {
+        border-radius: 35em;
+        display: block;
+        width: 100%;
+        background-color: #ffffffd3;
+        border: 4px solid #3c3d3d;
+
+        .image {
+          border-radius: 35em;
+          width: 100%;
+        }
+      }
+
+      .name {
+        margin-top: 5px; /* Reducimos el margen superior */
+        font-size: 20px;
+        font-weight: bold;
+        color: #3c3d3d;
+      }
+    }
+  }
+}
+

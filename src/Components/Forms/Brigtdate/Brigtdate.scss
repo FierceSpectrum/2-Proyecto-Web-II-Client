@@ -1,0 +1,51 @@
+.birthdate {
+  width: 100%;
+  border: none;
+  margin-top: 15px;
+  border-inline: 2px solid transparent;
+
+  &::-moz-placeholder {
+    color: rgb(170, 170, 170);
+  }
+
+  &::placeholder {
+    color: rgb(170, 170, 170);
+  }
+  .Error {
+    color: #ff0000;
+    padding: 0 35px 0 10px;
+    pointer-events: none;
+    transition: all 0.5s ease-in-out;
+    text-align: left;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  select {
+    color: #aaaaaa;
+    background: white;
+    border: none;
+    padding: 14px 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+    box-shadow: #cff0ff 0px 10px 10px -5px;
+    border-inline: 2px solid transparent;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #aaaaaa;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: rgb(146, 255, 3);
+      background-color: transparent;
+      border-bottom-right-radius: 50%;
+    }
+    option {
+      color: gray;
+    }
+  }
+}
