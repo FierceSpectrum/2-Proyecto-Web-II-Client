@@ -73,9 +73,10 @@ function PerfilEdit(props) {
   };
 
   const url = !!props.user._id
-    ? `http://localhost:3001/api/accounts?id=${props.user._id}`
-    : "http://localhost:3001/api/accounts";
+    ? `http://localhost:3002/api/accounts?id=${props.user._id}`
+    : "http://localhost:3002/api/accounts";
   const update = async () => {
+    const token = localStorage.getItem("token");
     const data = await {
       full_name: full_name,
       avatar: avatar,
@@ -87,6 +88,7 @@ function PerfilEdit(props) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -119,10 +121,12 @@ function PerfilEdit(props) {
       user: props.iduser,
     };
     console.log(data);
+    const token = localStorage.getItem("token");
     await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -142,12 +146,14 @@ function PerfilEdit(props) {
       });
   };
 
-  const urldeleted = `http://localhost:3001/api/accounts?id=${props.user._id}`;
+  const urldeleted = `http://localhost:3002/api/accounts?id=${props.user._id}`;
   const eliminate = async () => {
+    const token = localStorage.getItem("token");
     await fetch(urldeleted, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -195,12 +201,13 @@ function PerfilEdit(props) {
   }, [avatars]);
 
   const loadinAvatars = async () => {
-    const urlaccounts = "http://localhost:3001/api/avatars";
-
+    const urlaccounts = "http://localhost:3002/api/avatars";
+    const token = localStorage.getItem("token");
     await fetch(urlaccounts, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -379,10 +386,7 @@ function PerfilEdit(props) {
                 >
                   <ul>
                     {avatars.map((avatar, index) => (
-                      <li
-                        key={index}
-                        onClick={() => setAvatar(avatar.url)}
-                      >
+                      <li key={index} onClick={() => setAvatar(avatar.url)}>
                         <img src={avatar.url} alt="" />
                       </li>
                     ))}

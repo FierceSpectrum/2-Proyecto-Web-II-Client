@@ -24,13 +24,15 @@ function HomeAdmin() {
   }, [admin, setAdmin, navigate]);
 
   const urlaccounts = admin
-    ? `http://localhost:3001/api/accounts?iduser=${admin.id}`
+    ? `http://localhost:3002/api/accounts?iduser=${admin.id}`
     : "";
   const getAccounts = async () => {
+    const token = localStorage.getItem("token");
     await fetch(urlaccounts, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -82,7 +84,7 @@ function HomeAdmin() {
         {showButton && <PlaylistEdit iduser={!admin ? 0 : admin.id} />}
       </div>
       <div className="button-return">
-        <button onClick={() => navigate("/Perfiles")} className="button">
+        <button onClick={() => navigate("/Profiles")} className="button">
           <svg
             className="svg-icon"
             fill="none"

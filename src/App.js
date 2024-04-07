@@ -1,6 +1,8 @@
 import "./App.css";
-import React, {useState} from "react";
-import {BrowserRouter, Route, Routes, Navigate} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./Components/Home/Home";
 import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
@@ -11,41 +13,77 @@ function App() {
   const [logueado, setLogueado] = useState(localStorage.getItem("Login"));
   const [user, setUser] = useState(localStorage.getItem("User"));
   const [admin, setAdmin] = useState(localStorage.getItem("Admin"));
+  const [interceptorExecuted, setInterceptorExecuted] = useState(false);
+
+  useEffect(() => {
+    if (!interceptorExecuted) {
+      // Intercepta las solicitudes fetch
+      const originalFetch = window.fetch;
+      window.fetch = function (...args) {
+        return originalFetch
+          .apply(this, args)
+          .then((response) => {
+            // Verifica si la respuesta es exitosa
+            if (!response.ok) {
+              // Si hay un error, lanzamos una excepción
+              if (
+                response.status === 401 &&
+                response.statusText === "Unauthorized"
+              ) {
+                // Marcar el interceptor como ejecutado
+
+                setInterceptorExecuted(true);
+              }
+              return;
+            }
+            return response;
+          })
+          .catch((error) => {
+            console.error("Error en la solicitud fetch:", error);
+            // toast.error("Se ha producido un error en la solicitud");
+            throw error;
+          });
+      };
+    }
+  }, [interceptorExecuted]);
+
+  // Reiniciar interceptorExecuted cuando se vuelve al inicio de sesión
+  useEffect(() => {
+    if (interceptorExecuted) {
+      toast.error("Se expiró el tiempo de tu sesión");
+      localStorage.clear();
+      // Esperar 2 segundos antes de redirigir al usuario
+      setTimeout(() => {
+        window.location.href = '/Login';
+      }, 5000);
+
+    }
+  }, [interceptorExecuted]);
+
+  useEffect(() => {
+    setInterceptorExecuted(false);
+  }, [logueado]);
 
   return (
     <BrowserRouter>
-      <div className='App'>
+      <div className="App">
+        <ToastContainer />
         <Routes>
           <Route
-            path='/'
+            path="/"
             element={
-              logueado && user? (
-                  <Navigate to='/Perfiles' />
+              logueado && user ? (
+                <Navigate to="/Profiles" />
               ) : (
-                <Navigate to='/Login' />
+                <Navigate to="/Login" />
               )
             }
           ></Route>
-          <Route
-            path='/Home'
-            element={<Home />}
-          />
-          <Route
-            path='/Login'
-            element={<Login />}
-          />
-          <Route
-            path='/Register'
-            element={<Register />}
-          />
-          <Route
-            path='/Profiles'
-            element={<Perfiles />}
-          />
-          <Route
-            path='/HomeAdmin'
-            element={<HomeAdmin />}
-          />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
+          <Route path="/Profiles" element={<Perfiles />} />
+          <Route path="/HomeAdmin" element={<HomeAdmin />} />
         </Routes>
       </div>
     </BrowserRouter>

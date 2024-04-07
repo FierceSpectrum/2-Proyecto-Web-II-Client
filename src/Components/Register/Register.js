@@ -92,7 +92,7 @@ function Register() {
       }
     }
 
-    const urllogin = "http://localhost:3001/api/users";
+    const urllogin = "http://localhost:3002/api/users";
 
     await fetch(urllogin, {
       method: "POST",

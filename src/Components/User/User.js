@@ -64,7 +64,7 @@ const User = () => {
                 <button
                   onClick={() => {
                     localStorage.clear();
-                    navigate("/");
+                    navigate("/Login");
                   }}
                 >
                   Sign off

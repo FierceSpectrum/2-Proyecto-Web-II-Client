@@ -26,7 +26,7 @@ function Login() {
     }
   }, [user.id, logeado, navigate, user]);
 
-  const urllogin = "http://localhost:3001/api/usersLogin";
+  const urllogin = "http://localhost:3002/api/session";
 
   const validarEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,19 +59,17 @@ function Login() {
         }
         return response.json();
       })
-      .then((data) => {
-        data.forEach((user) => {
-          const data = {
-            id: user._id,
-            email: user.email,
-            pin: user.pin,
-            name: user.name,
-            last_name: user.last_name,
-          };
-          setUser(data);
-          return;
-        });
-        setErrorLogin("El usuario o contraseña son invalidos");
+      .then((response) => {
+        const user = response.user;
+        const data = {
+          id: user._id,
+          email: user.email,
+          pin: user.pin,
+          name: user.name,
+          last_name: user.last_name,
+        };
+        setUser(data);
+        localStorage.setItem("token", response.token);
         return;
       })
       .catch((err) => {

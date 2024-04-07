@@ -17,7 +17,7 @@ const Perfiles = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("User")));
   const [accounts, setAccounts] = useState([]);
 
-  const urlaccounts = `http://localhost:3001/api/accounts?iduser=${user.id}`;
+  const urlaccounts = `http://localhost:3002/api/accounts?iduser=${user.id}`;
 
   useEffect(() => {
     if (logeado) {
@@ -34,10 +34,12 @@ const Perfiles = () => {
   }, []);
 
   const getAccounts = async () => {
+    const token = localStorage.getItem("token");
     await fetch(urlaccounts, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {

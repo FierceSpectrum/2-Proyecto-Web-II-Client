@@ -76,11 +76,13 @@ function PlaylistEdit(props) {
   };
 
   const charge = async () => {
-    const urlplaylis = `http://localhost:3001/api/playlists?iduser=${props.iduser}`;
+    const urlplaylis = `http://localhost:3002/api/playlists?iduser=${props.iduser}`;
+    const token = localStorage.getItem("token");
     await fetch(urlplaylis, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
@@ -110,16 +112,17 @@ function PlaylistEdit(props) {
   };
 
   const createpost = async () => {
-    const urlplaylis = `http://localhost:3001/api/playlists`;
+    const urlplaylis = `http://localhost:3002/api/playlists`;
+    const token = localStorage.getItem("token");
     const data = await {
       name: name,
-      url: url,
       user: props.iduser,
     };
     await fetch(urlplaylis, {
       method: "Post",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -152,7 +155,8 @@ function PlaylistEdit(props) {
   };
 
   const update = async () => {
-    const urlplaylis = `http://localhost:3001/api/videos?id=${playlist.id}&idvideo=${video._id}`;
+    const urlplaylis = `http://localhost:3002/api/videos?id=${playlist.id}&idvideo=${video._id}`;
+    const token = localStorage.getItem("token");
     const data = await {
       name: name,
       url: url,
@@ -162,6 +166,7 @@ function PlaylistEdit(props) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -183,18 +188,20 @@ function PlaylistEdit(props) {
   };
 
   const create = async () => {
-    const urlplaylis = `http://localhost:3001/api/videos`;
+    const urlplaylis = `http://localhost:3002/api/videos`;
+    const token = localStorage.getItem("token");
 
     const data = await {
       name: name,
       url: url,
-      user: props.iduser,
+      playlist: playlist.id,
     };
 
     await fetch(urlplaylis, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -215,11 +222,13 @@ function PlaylistEdit(props) {
   };
 
   const eliminate = async () => {
-    const urlplaylis = `http://localhost:3001/api/videos?id=${playlist.id}&idvideo=${video._id}`;
+    const urlplaylis = `http://localhost:3002/api/videos?id=${playlist.id}&idvideo=${video._id}`;
+    const token = localStorage.getItem("token");
     await fetch(urlplaylis, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {

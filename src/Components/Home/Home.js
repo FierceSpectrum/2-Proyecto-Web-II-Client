@@ -34,13 +34,15 @@ function Home() {
     Validar();
   }, []);
 
-  const urllogin = `http://localhost:3001/api/playlists?iduser=${account.user}`;
+  const urllogin = `http://localhost:3002/api/playlists?iduser=${account.user}`;
 
   const Validar = async () => {
+    const token = localStorage.getItem("token");
     await fetch(urllogin, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
