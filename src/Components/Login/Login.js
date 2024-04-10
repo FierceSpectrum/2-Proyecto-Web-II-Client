@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Email from "../Forms/Email/Email";
 import Password from "../Forms/Password/Password";
+import VerificCode from "../Forms/VerificCode/VerificCode";
 import "./Login.scss";
 
 function Login() {
@@ -12,6 +13,28 @@ function Login() {
   const [password, setPassword] = useState();
   const [user, setUser] = useState([]);
   const [errorlogin, setErrorLogin] = useState("");
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [CodeValue, setCodeValue] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
+
+  const openPopup = () => {
+    setErrorMessage("");
+    setCodeValue("");
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
+  useEffect(() => {
+    if (CodeValue.length === 6) {
+      ValidarCode()
+    } else {
+      setErrorMessage("Code incorrecto");
+    }
+  }, [CodeValue, setCodeValue]);
 
   useEffect(() => {
     if (!!user.id) {
@@ -60,21 +83,56 @@ function Login() {
         return response.json();
       })
       .then((response) => {
+        localStorage.setItem("token", response);
+        openPopup();
+        return;
+      })
+      .catch((err) => {
+        console.log("error: " + err);
+        setErrorLogin("El usuario o contraseña son invalidos");
+      });
+  };
+
+  
+  const ValidarCode = async () => {
+    const urlCode = "http://localhost:3002/api/authentication";
+    const data = {
+      code: CodeValue,
+    };
+    const token = localStorage.getItem("token");
+    await fetch(urlCode, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          setErrorLogin("Error con la conexion");
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((response) => {
         const user = response.user;
         const data = {
-          id: user._id,
+          id: user.userID,
           email: user.email,
           pin: user.pin,
           name: user.name,
           last_name: user.last_name,
         };
         setUser(data);
+        closePopup();
         localStorage.setItem("token", response.token);
         return;
       })
       .catch((err) => {
+        
         console.log("error: " + err);
-        setErrorLogin("El usuario o contraseña son invalidos");
+        setErrorMessage("Code incorrecto");
       });
   };
 
@@ -102,6 +160,20 @@ function Login() {
           </form>
         </div>
       </div>
+
+      {showPopup && (
+        <>
+          <div className="popup-overlay">
+            <VerificCode
+              closePopup={closePopup}
+              setCode={setCodeValue}
+              errorMessage={errorMessage}
+              setErrorMessage={setErrorMessage}
+              ValidarCode={ValidarCode}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 }

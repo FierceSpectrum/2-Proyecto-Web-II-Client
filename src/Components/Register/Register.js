@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Country from "../Forms/CountrySelect/CountrySelect";
+import Phone from "../Forms/Phone/Phone";
 import Brigtdate from "../Forms/Brigtdate/Brigtdate";
 import Pin from "../Forms/Pin/Pin";
 import Password from "../Forms/Password/Password";
@@ -22,7 +23,7 @@ function Register() {
   const [birthdate, setBirthdate] = useState();
 
   const [country, setCountry] = useState("");
-  const [phone, setPhone] = useState("87034733");
+  const [phone, setPhone] = useState("");
 
   const [email, setEmail] = useState();
 
@@ -55,7 +56,6 @@ function Register() {
   }, [navigate, user]);
 
   const validarEmail = async (email) => {
-
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
@@ -99,18 +99,18 @@ function Register() {
       password: password,
     };
     console.log(data);
-
     for (const key in data) {
       if (Object.hasOwnProperty.call(data, key)) {
         const value = data[key];
         if (!value || (typeof value === "string" && value.trim() === "")) {
-          return `${key.charAt(0).toUpperCase() + key.slice(1)} is required`;
+          setErrorRegister(
+            `${key.charAt(0).toUpperCase() + key.slice(1)} is required`
+          );
+          return;
         }
       }
     }
-
     const urllogin = "http://localhost:3002/api/users";
-
     await fetch(urllogin, {
       method: "POST",
       headers: {
@@ -119,9 +119,8 @@ function Register() {
       body: JSON.stringify(data),
     })
       .then((response) => {
-        console.log(1);
         if (!response.ok) {
-          if (response.status === 400) {
+          if (response.status === 404) {
             return response.json().then((errorData) => {
               throw new Error(errorData.error);
             });
@@ -142,8 +141,9 @@ function Register() {
         setUser(user);
         setInterceptorExecuted(true);
       })
-      .catch((err) => {
-        setErrorRegister(err.message);
+      .catch((error) => {
+        console.log("error " + error);
+        setErrorRegister(error.message);
       });
   };
 
@@ -163,6 +163,7 @@ function Register() {
           >
             <p className="Error">{errorRegister}</p>
             <Names setName={setName} setLastName={setLastName} />
+            <Phone setPhone={setPhone} />
 
             <Pin
               pin={pin}

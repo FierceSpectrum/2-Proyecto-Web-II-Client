@@ -26,10 +26,13 @@ function App() {
     if (!interceptorExecuted) {
       // Intercepta las solicitudes fetch
       const originalFetch = window.fetch;
+      console.log(originalFetch);
       window.fetch = function (...args) {
         return originalFetch
           .apply(this, args)
           .then((response) => {
+            console.log(response);
+            console.log(response);
             // Verifica si la respuesta es exitosa
             if (!response.ok) {
               // Si hay un error, lanzamos una excepción
@@ -50,6 +53,7 @@ function App() {
             throw error;
           });
       };
+      window.fetch = originalFetch;
     }
   }, [interceptorExecuted]);
 
