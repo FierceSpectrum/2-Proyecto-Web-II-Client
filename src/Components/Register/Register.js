@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Country from "../Forms/CountrySelect/CountrySelect";
 import Brigtdate from "../Forms/Brigtdate/Brigtdate";
@@ -7,6 +8,8 @@ import Password from "../Forms/Password/Password";
 import Names from "../Forms/Names/Names";
 import Email from "../Forms/Email/Email";
 import "./Register.scss";
+
+import { SendMail } from "../ConfirmAccount/ConfirmAccount";
 
 function Register() {
   const navigate = useNavigate();
@@ -19,6 +22,7 @@ function Register() {
   const [birthdate, setBirthdate] = useState();
 
   const [country, setCountry] = useState("");
+  const [phone, setPhone] = useState("87034733");
 
   const [email, setEmail] = useState();
 
@@ -33,13 +37,25 @@ function Register() {
   const [errorEmail, setErrorEmail] = useState();
   const [errorPassword, setErrorPassword] = useState();
 
+  const [interceptorExecuted, setInterceptorExecuted] = useState(false);
+
+  useEffect(() => {
+    if (interceptorExecuted) {
+      toast.error("Confirma tu cuenta en tu correo electronico");
+      setTimeout(() => {
+        navigate("/Login");
+      }, 5000);
+    }
+  }, [interceptorExecuted]);
+
   useEffect(() => {
     if (!!user.id) {
       navigate("/Login");
     }
   }, [navigate, user]);
 
-  const validarEmail = (email) => {
+  const validarEmail = async (email) => {
+
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
@@ -77,6 +93,7 @@ function Register() {
       last_name: lastName,
       birthdate: birthdate,
       pin: parseInt(pin),
+      phone: phone,
       country: country,
       email: email,
       password: password,
@@ -102,6 +119,7 @@ function Register() {
       body: JSON.stringify(data),
     })
       .then((response) => {
+        console.log(1);
         if (!response.ok) {
           if (response.status === 400) {
             return response.json().then((errorData) => {
@@ -122,6 +140,7 @@ function Register() {
         };
 
         setUser(user);
+        setInterceptorExecuted(true);
       })
       .catch((err) => {
         setErrorRegister(err.message);
@@ -130,6 +149,7 @@ function Register() {
 
   return (
     <>
+      <ToastContainer />
       <div className="boddyregister">
         <div className="container">
           <div className="heading">Sign Up</div>

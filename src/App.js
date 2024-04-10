@@ -8,12 +8,19 @@ import Login from "./Components/Login/Login";
 import Register from "./Components/Register/Register";
 import Perfiles from "./Components/Perfiles/Perfiles";
 import HomeAdmin from "./Components/HomeAdmin/HomeAdmin";
+import ConfirmAccount from "./Components/ConfirmAccount/ConfirmAccount";
 
 function App() {
   const [logueado, setLogueado] = useState(localStorage.getItem("Login"));
   const [user, setUser] = useState(localStorage.getItem("User"));
   const [admin, setAdmin] = useState(localStorage.getItem("Admin"));
   const [interceptorExecuted, setInterceptorExecuted] = useState(false);
+
+  // useEffect(() => {
+  //   if (!(logueado && user)) {
+  //     window.location.href = "/Login";
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (!interceptorExecuted) {
@@ -31,7 +38,6 @@ function App() {
                 response.statusText === "Unauthorized"
               ) {
                 // Marcar el interceptor como ejecutado
-
                 setInterceptorExecuted(true);
               }
               return;
@@ -51,12 +57,12 @@ function App() {
   useEffect(() => {
     if (interceptorExecuted) {
       toast.error("Se expiró el tiempo de tu sesión");
-      localStorage.clear();
       // Esperar 2 segundos antes de redirigir al usuario
       setTimeout(() => {
-        window.location.href = '/Login';
+        localStorage.clear();
+        setLogueado(localStorage.getItem("Login"));
+        window.location.href = "/Login";
       }, 5000);
-
     }
   }, [interceptorExecuted]);
 
@@ -84,6 +90,7 @@ function App() {
           <Route path="/Register" element={<Register />} />
           <Route path="/Profiles" element={<Perfiles />} />
           <Route path="/HomeAdmin" element={<HomeAdmin />} />
+          <Route path="/ConfirmAccount/:id" element={<ConfirmAccount />} />
         </Routes>
       </div>
     </BrowserRouter>
