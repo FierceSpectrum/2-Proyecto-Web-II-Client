@@ -18,6 +18,37 @@ function PerfilEdit(props) {
   const [pin, setPin] = useState(props.user.pin);
   const [age, setAge] = useState(props.user.age);
 
+  const [showPlaylists, setShowPlaylists] = useState(false);
+  const [showPopupPlaylistC, setShowPopupPlaylistC] = useState(false);
+  const [showPopupDeleteP, setShowPopupDeleteP] = useState(false);
+
+  const [playlistsAccount, setPlaylistsAccount] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [playlist, setPlaylist] = useState([]);
+
+  const [nameP, setNameP] = useState("");
+
+  const openPopupPlaylists = () => {
+    setShowPlaylists(!showPlaylists);
+  };
+
+  const PopupDeleteP = () => {
+    setShowPopupDeleteP(!showPopupDeleteP);
+  };
+
+  const chargeplaylist = (playlist) => {
+    setPlaylist(playlist);
+    setNameP(playlist.name);
+  };
+
+  const openPopupPlaylistC = (playlist) => {
+    chargeplaylist(playlist);
+    setShowPopupPlaylistC(true);
+  };
+  const closePopupPlaylistC = (playlist) => {
+    setShowPopupPlaylistC(false);
+  };
+
   useEffect(() => {}, []);
 
   const clear = () => {
@@ -65,15 +96,15 @@ function PerfilEdit(props) {
       return;
     }
 
-    if (!!props.user._id) {
+    if (!!props.user.id) {
       update();
       return;
     }
     create();
   };
 
-  const url = !!props.user._id
-    ? `http://localhost:3002/api/accounts?id=${props.user._id}`
+  const url = !!props.user.id
+    ? `http://localhost:3002/api/accounts?id=${props.user.id}`
     : "http://localhost:3002/api/accounts";
   const update = async () => {
     const token = localStorage.getItem("token");
@@ -146,7 +177,7 @@ function PerfilEdit(props) {
       });
   };
 
-  const urldeleted = `http://localhost:3002/api/accounts?id=${props.user._id}`;
+  const urldeleted = `http://localhost:3002/api/accounts?id=${props.user.id}`;
   const eliminate = async () => {
     const token = localStorage.getItem("token");
     await fetch(urldeleted, {
@@ -201,10 +232,68 @@ function PerfilEdit(props) {
   }, [avatars]);
 
   const loadinAvatars = async () => {
-    const urlaccounts = "http://localhost:3002/api/avatars";
+    try {
+      const urlaccounts = `http://localhost:3006/graphql`;
+      const token = localStorage.getItem("token");
+      const response = await fetch(urlaccounts, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          query: `query { getAllAvatars { url } }`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const { data } = await response.json();
+      setAvatars(data.getAllAvatars);
+    } catch (error) {
+      console.log({ Error: error });
+    }
+  };
+
+  const chargplaylist = () => {
+    try {
+      const playlists = [];
+      props.user.playlists.map(async (idplaylist) => {
+        console.log(idplaylist);
+        const urlaccounts = `http://localhost:3006/graphql`;
+        const token = localStorage.getItem("token");
+        const response = await fetch(urlaccounts, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            query: `query { getPlaylist(id: "${idplaylist}" ) { id name playlist { id }} }`,
+          }),
+        });
+        console.log(response);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const { data } = await response.json();
+        console.log(data.getPlaylist);
+        playlists.push(data.getPlaylist);
+      });
+      setPlaylistsAccount(playlists);
+    } catch (error) {
+      console.log({ Error: error });
+    }
+  };
+
+  const eliminatePlaylist = async (playlist) => {
+    let playlistsAccount2 = playlistsAccount;
+    console.log(playlist)
+    const urlaccounts = `http://localhost:3002/api/accountsPlaylist?id=${props.user.id}&idplaylist=${playlist.id}`;
     const token = localStorage.getItem("token");
     await fetch(urlaccounts, {
-      method: "GET",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         authorization: `Bearer ${token}`,
@@ -216,28 +305,90 @@ function PerfilEdit(props) {
         }
         return response.json();
       })
-      .then((data) => {
-        const avatars = [];
-
-        data.forEach((avatar) => {
-          const data = {
-            url: avatar.url,
-          };
-          avatars.push(data);
+      .then((playlist) => {
+        console.log();
+        playlistsAccount2 = playlistsAccount2.filter(function (value) {
+          return value !== props.user.id;
         });
-
-        setAvatars(avatars);
-        return;
+        setPlaylistsAccount(playlistsAccount2);
+        setRequest(true);
       })
-      .catch((err) => {
-        console.log("error: " + err);
+      .catch((error) => {
+        console.log({ Error: error });
       });
+  };
+
+  const addPlaylist = async (playlist) => {
+    console.log(playlist.id);
+    const data = await {
+      playlist: playlist.id,
+    };
+    console.log(data);
+    const urlaccounts = `http://localhost:3002/api/accountsPlaylist?id=${props.user.id}`;
+    const token = localStorage.getItem("token");
+    await fetch(urlaccounts, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        console.log(response);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((playlist) => {
+        console.log(playlist);
+        setRequest(true);
+      })
+      .catch((error) => {
+        console.log({ Error: error });
+      });
+  };
+
+  const chargallplaylist = async () => {
+    try {
+      const urlaccounts = `http://localhost:3006/graphql`;
+      const token = localStorage.getItem("token");
+      console.log(localStorage);
+      console.log(props.user);
+      console.log(props.user.user);
+      const response = await fetch(urlaccounts, {
+        method: "Post",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          query: `query { getAllPlaylistsUser(iduser: "${props.user.user}" ) { id name playlist {  id name }} }`,
+        }),
+      });
+      console.log("response");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const { data } = await response.json();
+      console.log(data);
+      setPlaylists(data.getAllPlaylistsUser);
+    } catch (error) {
+      console.log({ Error: error });
+    }
   };
 
   return (
     <>
       <>
-        <div className="flip-card" onClick={openPopup}>
+        <div
+          className="flip-card"
+          onClick={() => {
+            !props.edit ? chargplaylist() : console.log();
+            openPopup();
+          }}
+        >
           <div className="flip-card-front">
             <div className="profile-image">
               <div className="card-top">
@@ -332,16 +483,28 @@ function PerfilEdit(props) {
                     </div>
                     <div className="buttons">
                       <button className="send-btn">
-                        {!!props.user._id ? "Confirm" : "Create"}
+                        {!!props.user.id ? "Confirm" : "Create"}
                       </button>
-                      {!!props.user._id && (
-                        <button
-                          type="button"
-                          className="delete-btn"
-                          onClick={PopupDelete}
-                        >
-                          Eliminar
-                        </button>
+                      {!!props.user.id && (
+                        <>
+                          <button
+                            type="button"
+                            className="delete-btn"
+                            onClick={PopupDelete}
+                          >
+                            Eliminar
+                          </button>
+                          <button
+                            type="button"
+                            className="playlist-btn"
+                            onClick={() => {
+                              chargallplaylist();
+                              openPopupPlaylists();
+                            }}
+                          >
+                            Playlists
+                          </button>
+                        </>
                       )}
                     </div>
                   </form>
@@ -395,6 +558,206 @@ function PerfilEdit(props) {
               </div>
             )}
           </div>
+          {showPlaylists && (
+            <>
+              <div className="popup-overlay2-PLC">
+                <div className="popup">
+                  <div className="main">
+                    <div className="top-bar">
+                      <button
+                        className="close-button"
+                        onClick={openPopupPlaylists}
+                      >
+                        X
+                      </button>
+                    </div>
+                    <div className="currentplaying">
+                      <p className="heading">Playlists</p>
+                    </div>
+                    <div className="songs">
+                      {playlistsAccount.map((playlist, index) => (
+                        <>
+                          <div className="loader" key={index}>
+                            <div className="EditButtons">
+                              <div className="buttons">
+                                <button
+                                  type="button"
+                                  className="delete-btn"
+                                  onClick={() => {
+                                    chargeplaylist(playlist);
+                                    PopupDeleteP();
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
+                            <div className="song">
+                              <p className="name">{playlist.name}</p>
+                              <p className="artist">
+                                {playlist.playlist.length}
+                              </p>
+                            </div>
+                            <div className="albumcover"></div>
+                          </div>
+                          {showPopupDeleteP && (
+                            <div className="popupDeleted">
+                              <div className="card">
+                                <div className="card-content">
+                                  <p className="card-heading">
+                                    Remove playlist
+                                  </p>
+                                  <p className="card-description">
+                                    Are you sure you want to remove this
+                                    plyalist?
+                                  </p>
+                                </div>
+                                <div className="card-button-wrapper">
+                                  <button
+                                    className="card-button secondary"
+                                    onClick={() => {
+                                      chargeplaylist([]);
+                                      PopupDeleteP();
+                                    }}
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    className="card-button primary"
+                                    onClick={()=>eliminatePlaylist(playlist)}
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                                <button
+                                  className="exit-button"
+                                  onClick={PopupDeleteP}
+                                >
+                                  <svg height="20px" viewBox="0 0 384 512">
+                                    <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"></path>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      ))}
+                      {showPopupPlaylistC && (
+                        <div className="popup-overlay2">
+                          <div className="popup">
+                            <div className="main">
+                              <div className="top-bar">
+                                <button
+                                  className="close-button"
+                                  onClick={() => {
+                                    chargeplaylist([]);
+                                    closePopupPlaylistC();
+                                  }}
+                                >
+                                  X
+                                </button>
+                              </div>
+                              <div className="currentplaying">
+                                <p className="heading">Playlists</p>
+                              </div>
+                              <div className="songs">
+                                {playlists.map((playlist, index) => (
+                                  <>
+                                    <div className="loader" key={index}>
+                                      <div className="EditButtons">
+                                        <div className="buttons">
+                                          <button
+                                            className="send-btn"
+                                            onClick={() => {
+                                              chargeplaylist(playlist);
+                                              addPlaylist(playlist);
+                                            }}
+                                          >
+                                            Add
+                                          </button>
+                                        </div>
+                                      </div>
+                                      <div className="song">
+                                        <p className="name">{playlist.name}</p>
+                                        <p className="artist">
+                                          {playlist.playlist.length}
+                                        </p>
+                                      </div>
+                                      <div className="albumcover"></div>
+                                    </div>
+                                    {showPopupDeleteP && (
+                                      <div className="popupDeleted">
+                                        <div className="card">
+                                          <div className="card-content">
+                                            <p className="card-heading">
+                                              Remove playlist
+                                            </p>
+                                            <p className="card-description">
+                                              Are you sure you want to remove
+                                              this plyalist?
+                                            </p>
+                                          </div>
+                                          <div className="card-button-wrapper">
+                                            <button
+                                              className="card-button secondary"
+                                              onClick={() => {
+                                                chargeplaylist([]);
+                                                PopupDeleteP();
+                                              }}
+                                            >
+                                              Cancel
+                                            </button>
+                                            <button
+                                              className="card-button primary"
+                                              onClick={eliminatePlaylist}
+                                            >
+                                              Remove
+                                            </button>
+                                          </div>
+                                          <button
+                                            className="exit-button"
+                                            onClick={PopupDeleteP}
+                                          >
+                                            <svg
+                                              height="20px"
+                                              viewBox="0 0 384 512"
+                                            >
+                                              <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"></path>
+                                            </svg>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </>
+                                ))}
+                              </div>
+                              <button
+                                className="createvideo"
+                                onClick={() => {
+                                  closePopupPlaylistC();
+                                }}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      className="createvideo"
+                      onClick={() => {
+                        chargallplaylist();
+                        openPopupPlaylistC([]);
+                      }}
+                    >
+                      Add Playlist
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </>
       )}
     </>

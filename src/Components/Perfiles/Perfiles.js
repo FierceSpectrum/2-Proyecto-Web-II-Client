@@ -17,8 +17,6 @@ const Perfiles = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("User")));
   const [accounts, setAccounts] = useState([]);
 
-  const urlaccounts = `http://localhost:3002/api/accounts?iduser=${user.id}`;
-
   useEffect(() => {
     if (logeado) {
       localStorage.setItem("Admin", JSON.stringify(user));
@@ -33,14 +31,21 @@ const Perfiles = () => {
     getAccounts();
   }, []);
 
+  const urlaccounts = `http://localhost:3006/graphql`;
+
   const getAccounts = async () => {
     const token = localStorage.getItem("token");
     await fetch(urlaccounts, {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify(
+        {
+          query: `query { getAllAccountsUser(iduser: "${user.id}" ) { id full_name pin avatar playlists } }`,
+        }
+    ),
     })
       .then((response) => {
         if (!response.ok) {
@@ -49,7 +54,11 @@ const Perfiles = () => {
         return response.json();
       })
       .then((data) => {
-        setAccounts(data);
+        console.log("data");
+        console.log(data);
+        console.log(data.data);
+        console.log(data.data.getAllAccountsUser);
+        setAccounts(data.data.getAllAccountsUser);
         return;
       })
       .catch((err) => {

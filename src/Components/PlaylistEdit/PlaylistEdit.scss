@@ -3,6 +3,10 @@
   display: flex;
   justify-content: center;
 
+  .popup-overlay2 {
+    z-index: 10000;
+  }
+
   .animated-button {
     position: relative;
     display: flex;
@@ -382,7 +386,6 @@
     }
   }
 
-
   .popupDeleted {
     position: fixed;
     top: 0;
@@ -395,7 +398,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-  
+
     .card {
       width: 300px;
       height: fit-content;
@@ -409,33 +412,33 @@
       align-items: center;
       justify-content: center;
       box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.068);
-  
+
       .card-content {
         width: 100%;
         height: fit-content;
         display: flex;
         flex-direction: column;
         gap: 5px;
-  
+
         .card-heading {
           font-size: 20px;
           font-weight: 700;
           color: rgb(27, 27, 27);
         }
-  
+
         .card-description {
           font-weight: 100;
           color: rgb(102, 102, 102);
         }
       }
-  
+
       .card-button-wrapper {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-  
+
         .card-button {
           width: 50%;
           height: 35px;
@@ -444,18 +447,18 @@
           cursor: pointer;
           font-weight: 600;
         }
-  
+
         .primary {
           background-color: rgb(255, 114, 109);
           color: white;
-  
+
           &:hover {
             background-color: rgb(255, 73, 66);
           }
         }
         .secondary {
           background-color: #ddd;
-  
+
           &:hover {
             background-color: rgb(197, 197, 197);
           }
@@ -471,241 +474,235 @@
         top: 20px;
         right: 20px;
         cursor: pointer;
-  
+
         svg {
           fill: rgb(175, 175, 175);
         }
-        
+
         &:hover svg {
           fill: black;
         }
       }
-  
     }
   }
 
   /* Spotify music card made by: csozi | Website: www.csozi.hu*/
 
-.card {
-  position: relative;
-  min-width: 250px;
-  min-height: 120px;
-  background: #191414;
-  border-radius: 10px;
-  padding: .8rem;
-  display: flex;
-  flex-direction: column;
-  gap: .5rem;
-  box-shadow: 0 10px 40px -25px rgba(100, 100, 100, .5);
-}
-
-.top {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-block-end: .5rem;
-}
-
-.pfp {
-  position: relative;
-  height: 40px;
-  width: 40px;
-  background-color: white;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.title-1 {
-  color: white;
-  font-size: 1.25rem;
-  font-weight: 900;
-}
-
-.title-2 {
-  color: white;
-  font-size: .75rem;
-  opacity: .8;
-}
-
-/* new */
-.song-time {
-  width: 100%;
-  margin-inline: auto;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: .3rem;
-}
-
-.time {
-  width: 90%;
-  background-color: #5e5e5e;
-  height: .35rem;
-  border-radius: 3px;
-}
-
-.elapsed {
-  width: 42%;
-  background-color: #1db954;
-  height: 100%;
-  border-radius: 3px;
-}
-
-.controls {
-  color: white;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-}
-
-.volume {
-  height: 100%;
-  width: 48px;
-}
-
-.air {
-  height: 100%;
-  width: 48px;
-}
-
-.controls svg {
-  cursor: pointer;
-  transition: 0.1s;
-}
-
-.controls svg:hover {
-  color: #1db954;
-}
-
-.controls .heart:hover {
-  color: pink;
-}
-
-.volume {
-  opacity: 0;
-  position: relative;
-  transition: 0.2s;
-}
-
-.volume .slider {
-  height: 4px;
-  background-color: #5e5e5e;
-  width: 80%;
-  border-radius: 2px;
-  margin-left: .3rem;
-}
-
-.volume .slider .green {
-  background-color: #1db954;
-  height: 100%;
-  width: 80%;
-  border-radius: 3px;
-}
-
-.volume .circle {
-  background-color: white;
-  height: 6px;
-  width: 6px;
-  border-radius: 3px;
-  position: absolute;
-  right: 20%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.volume_button:hover ~ .volume {
-  opacity: 1;
-}
-
-.timetext {
-  color: white;
-}
-
-.time_now {
-  font-size: .8rem;
-  background-color: #00000060;
-  padding: .5rem;
-  border-radius: .5rem;
-  background-blend-mode: multiply;
-}
-
-.time_full {
-  font-size: .8rem;
-  background-color: #00000060;
-  padding: .5rem;
-  border-radius: .5rem;
-  background-blend-mode: multiply;
-}
-
-.playing {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  gap: 1px;
-  width: 30px;
-  height: 20px;
-}
-
-.greenline {
-  background-color: #1db954;
-  height: 20px;
-  width: 2px;
-  position: relative;
-  transform-origin: bottom;
-}
-
-.line-1 {
-  animation: infinite playing 1s ease-in-out;
-  animation-delay: 0.2s;
-}
-
-.line-2 {
-  animation: infinite playing 1s ease-in-out;
-  animation-delay: 0.5s;
-}
-
-.line-3 {
-  animation: infinite playing 1s ease-in-out;
-  animation-delay: 0.6s;
-}
-
-.line-4 {
-  animation: infinite playing 1s ease-in-out;
-  animation-delay: 0s;
-}
-
-.line-5 {
-  animation: infinite playing 1s ease-in-out;
-  animation-delay: 0.4s;
-}
-
-@keyframes playing {
-  0% {
-    transform: scaleY(0.1);
+  .card {
+    position: relative;
+    min-width: 250px;
+    min-height: 120px;
+    background: #191414;
+    border-radius: 10px;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0 10px 40px -25px rgba(100, 100, 100, 0.5);
   }
 
-  33% {
-    transform: scaleY(0.6);
+  .top {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-block-end: 0.5rem;
   }
 
-  66% {
-    transform: scaleY(0.9);
+  .pfp {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  100% {
-    transform: scaleY(0.1);
+  .title-1 {
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 900;
   }
-}
 
+  .title-2 {
+    color: white;
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
 
+  /* new */
+  .song-time {
+    width: 100%;
+    margin-inline: auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
 
+  .time {
+    width: 90%;
+    background-color: #5e5e5e;
+    height: 0.35rem;
+    border-radius: 3px;
+  }
 
+  .elapsed {
+    width: 42%;
+    background-color: #1db954;
+    height: 100%;
+    border-radius: 3px;
+  }
 
+  .controls {
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+  }
+
+  .volume {
+    height: 100%;
+    width: 48px;
+  }
+
+  .air {
+    height: 100%;
+    width: 48px;
+  }
+
+  .controls svg {
+    cursor: pointer;
+    transition: 0.1s;
+  }
+
+  .controls svg:hover {
+    color: #1db954;
+  }
+
+  .controls .heart:hover {
+    color: pink;
+  }
+
+  .volume {
+    opacity: 0;
+    position: relative;
+    transition: 0.2s;
+  }
+
+  .volume .slider {
+    height: 4px;
+    background-color: #5e5e5e;
+    width: 80%;
+    border-radius: 2px;
+    margin-left: 0.3rem;
+  }
+
+  .volume .slider .green {
+    background-color: #1db954;
+    height: 100%;
+    width: 80%;
+    border-radius: 3px;
+  }
+
+  .volume .circle {
+    background-color: white;
+    height: 6px;
+    width: 6px;
+    border-radius: 3px;
+    position: absolute;
+    right: 20%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .volume_button:hover ~ .volume {
+    opacity: 1;
+  }
+
+  .timetext {
+    color: white;
+  }
+
+  .time_now {
+    font-size: 0.8rem;
+    background-color: #00000060;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-blend-mode: multiply;
+  }
+
+  .time_full {
+    font-size: 0.8rem;
+    background-color: #00000060;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-blend-mode: multiply;
+  }
+
+  .playing {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    gap: 1px;
+    width: 30px;
+    height: 20px;
+  }
+
+  .greenline {
+    background-color: #1db954;
+    height: 20px;
+    width: 2px;
+    position: relative;
+    transform-origin: bottom;
+  }
+
+  .line-1 {
+    animation: infinite playing 1s ease-in-out;
+    animation-delay: 0.2s;
+  }
+
+  .line-2 {
+    animation: infinite playing 1s ease-in-out;
+    animation-delay: 0.5s;
+  }
+
+  .line-3 {
+    animation: infinite playing 1s ease-in-out;
+    animation-delay: 0.6s;
+  }
+
+  .line-4 {
+    animation: infinite playing 1s ease-in-out;
+    animation-delay: 0s;
+  }
+
+  .line-5 {
+    animation: infinite playing 1s ease-in-out;
+    animation-delay: 0.4s;
+  }
+
+  @keyframes playing {
+    0% {
+      transform: scaleY(0.1);
+    }
+
+    33% {
+      transform: scaleY(0.6);
+    }
+
+    66% {
+      transform: scaleY(0.9);
+    }
+
+    100% {
+      transform: scaleY(0.1);
+    }
+  }
 }
 @keyframes move6 {
   0% {

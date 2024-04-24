@@ -126,6 +126,7 @@ function Login() {
         };
         setUser(data);
         closePopup();
+        console.log(response.token)
         localStorage.setItem("token", response.token);
         return;
       })

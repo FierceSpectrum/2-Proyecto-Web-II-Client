@@ -27,27 +27,35 @@ function HomeAdmin() {
     ? `http://localhost:3002/api/accounts?iduser=${admin.id}`
     : "";
   const getAccounts = async () => {
-    const token = localStorage.getItem("token");
-    await fetch(urlaccounts, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setAccounts(data);
-        return;
-      })
-      .catch((err) => {
-        console.log("error: " + err);
+    try {
+      const urlaccounts = `http://localhost:3006/graphql`;
+      const token = localStorage.getItem("token");
+      const response = await fetch(urlaccounts, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          query: `query { getAllAccountsUser(iduser: "${admin.id}" ) { id full_name pin avatar age playlists user } }`,
+        }),
       });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const { data } = await response.json();
+      // console.log('data')
+      // console.log(data.data)
+      // console.log(data.getPlaylist)
+      // console.log(data)
+      // console.log(data)
+      setAccounts(data.getAllAccountsUser);
+      // console.log(playlistsAccount2);
+      // setPlaylistsAccount(playlistsAccount2);
+      // setLoading(false);
+    } catch (error) {
+      console.log({ Error: error });
+    }
   };
 
   return (

@@ -26,16 +26,20 @@ function App() {
     if (!interceptorExecuted) {
       // Intercepta las solicitudes fetch
       const originalFetch = window.fetch;
-      console.log(originalFetch);
       window.fetch = function (...args) {
         return originalFetch
           .apply(this, args)
           .then((response) => {
-            console.log(response);
-            console.log(response);
+            console.log("response");
+            console.log(response.url);
+            if (response.url === 'http://localhost:3002/api/users'){
+              console.log("notocar");
+              return response;
+            }
             // Verifica si la respuesta es exitosa
             if (!response.ok) {
               // Si hay un error, lanzamos una excepción
+              console.log("hee");
               if (
                 response.status === 401 &&
                 response.statusText === "Unauthorized"
@@ -53,9 +57,11 @@ function App() {
             throw error;
           });
       };
-      window.fetch = originalFetch;
+      setTimeout(() => {
+        window.fetch = originalFetch;
+      }, 5000);
     }
-  }, [interceptorExecuted]);
+  }, []);
 
   // Reiniciar interceptorExecuted cuando se vuelve al inicio de sesión
   useEffect(() => {
