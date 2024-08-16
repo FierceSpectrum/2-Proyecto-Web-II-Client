@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# 2° Proyecto Web II Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Descripción
 
-## Available Scripts
+2° Proyecto Web II Client es la interfaz de usuario para el proyecto 2° Proyecto Web II Server. Permite a los usuarios interactuar con la aplicación a través de una serie de componentes y vistas. Esta parte del proyecto incluye la autenticación, la administración de perfiles y playlists, y la visualización de videos.
 
-In the project directory, you can run:
+## Componentes
 
-### `npm start`
+### Componentes Principales
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Home**: Vista principal de la aplicación.
+- **Home Admin**: Vista de administración donde se pueden gestionar perfiles y playlists.
+- **Login**: Página de inicio de sesión.
+- **Perfil**: Vista del perfil del usuario.
+- **Perfil Edit**: Página para editar la información del perfil.
+- **Perfiles**: Vista para gestionar varios perfiles.
+- **Playlist**: Vista de las playlists del usuario.
+- **Edit Playlist**: Página para editar las playlists.
+- **Register**: Página para el registro de nuevos usuarios.
+- **Confirm Account**: Nuevo componente para confirmar cuentas de usuario mediante un enlace recibido.
+- **Verificate Code**: Componente que solicita un código de verificación de dos factores después de iniciar sesión.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Características
 
-### `npm test`
+- **Confirm Account**: Permite a los usuarios confirmar sus cuentas a través de un enlace enviado a su correo. Llama a la API para confirmar la cuenta usando el ID del usuario.
+  
+- **Verificate Code**: Después del inicio de sesión, se solicita un código de verificación enviado por SMS. El usuario debe ingresar este código para obtener un token de acceso.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Admin Dashboard**: Incluye opciones para crear, editar y eliminar perfiles y playlists. Los perfiles y playlists se pueden gestionar desde la vista de administración.
 
-### `npm run build`
+- **Playlist Management**: Permite agregar, editar y eliminar playlists. Los usuarios pueden gestionar las playlists asociadas a sus perfiles y agregar o eliminar videos de ellas.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Video Search**: Los usuarios pueden buscar videos dentro de las playlists. El buscador permite filtrar videos por tipo o título.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Integración con APIs
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **GraphQL API**: Todas las solicitudes GET para obtener datos se realizan a la API GraphQL.
+- **REST API**: Las solicitudes para actualizar, eliminar o realizar otras operaciones se envían a la API REST.
 
-### `npm run eject`
+### Interceptor de Fetch
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Interceptor de Fetch**: Se ha agregado una función de interceptor de Fetch que redirige a los usuarios a la página de inicio de sesión si se recibe un error 401 (no autorizado). Esto asegura que los usuarios se vuelvan a autenticar si su token de acceso ha expirado.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Ejecución del Proyecto
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Para ejecutar el proyecto localmente, sigue estos pasos:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
+    ```bash
+    git clone https://github.com/FierceSpectrum/2-Proyecto-Web-II-Client
+    ```
+2. Navega hasta la carpeta del proyecto:
+    ```bash
+    cd 2-Proyecto-Web-II-Client
+    ```
+3. Instala las dependencias necesarias:
+    ```bash
+    npm install
+    ```
+4. Inicia la aplicación:
+    ```bash
+    npm start
+    ```
+5. La aplicación estará disponible en `http://localhost:3000`.
 
-## Learn More
+## Estado del Proyecto
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Este proyecto fue desarrollado como parte del curso Web 2 y está completo en términos de funcionalidades frontend. No se han realizado actualizaciones desde su creación.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Autor
 
-### Code Splitting
+Este proyecto fue desarrollado en su totalidad por [Benjamín Sandí](https://github.com/FierceSpectrum) durante el primer cuatrimestre del año 2024.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Licencia
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este proyecto no tiene una licencia formal y fue creado con fines educativos. No está destinado para uso comercial.
